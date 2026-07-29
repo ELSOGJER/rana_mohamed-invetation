@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Music, VolumeX, Heart, ChevronDown, Calendar, Clock } from 'lucide-react';
+import backgroundMusic from './background_music.mp3';
 
 /* ─── constants ──────────────────────────────────────────────────────── */
 const TARGET_DATE = new Date('2026-08-27T20:00:00+03:00').getTime();
@@ -376,7 +377,15 @@ export default function App() {
   const timeLeft = useCountdown();
 
   const tryPlay = useCallback(() => {
-    if (audioRef.current && !isPlaying) audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    if (!audioRef.current || isPlaying) return;
+    const audio = audioRef.current;
+    audio.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {
+        setTimeout(() => {
+          audio.play().then(() => setIsPlaying(true)).catch(() => {});
+        }, 150);
+      });
   }, [isPlaying]);
 
   useEffect(() => {
@@ -416,7 +425,7 @@ export default function App() {
 
   return (
     <div className="section__el-23" style={{ minHeight: '100dvh', width: '100%', position: 'relative', background: C.olive, overflowX: 'hidden', fontFamily: "'Amiri', serif", direction: 'rtl' }}>
-      <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop preload="auto" />
+      <audio ref={audioRef} src={backgroundMusic} loop preload="auto" />
 
       {/* ══════════════════════════════════════════
           COVER

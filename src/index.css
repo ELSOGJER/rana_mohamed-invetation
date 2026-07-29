@@ -154,8 +154,8 @@ body *::selection {
 }
 
 
-@media (max-width: 350px) {
+@media (max-width: 320px) {
   .section__el-57 {
-    max-width: 250px !important;
+    max-width: 220px !important;
   }
 }
